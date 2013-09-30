@@ -56,8 +56,10 @@
 
 - (void)main
 {
-	_result = [self fetch];
-	[self finish];
+	@autoreleasepool {
+		_result = [self fetch];
+		[self finish];
+	}
 }
 
 - (NSArray *)result

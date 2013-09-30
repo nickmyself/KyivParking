@@ -38,29 +38,31 @@
 
 - (void)main
 {
-	NSArray *parkings = [self fetch];
+	@autoreleasepool {
+		NSArray *parkings = [self fetch];
 
-	NSPredicate *predicate = [NSPredicate predicateWithBlock:
-		^BOOL(DAParking *parking, NSDictionary *bindings)
-	{
-		parking.location = [[CLLocation alloc] initWithLatitude:parking.latitude
-			longitude:parking.longitude];
-		parking.distance = [parking.location distanceFromLocation:_location];
+		NSPredicate *predicate = [NSPredicate predicateWithBlock:
+			^BOOL(DAParking *parking, NSDictionary *bindings)
+		{
+			parking.location = [[CLLocation alloc] initWithLatitude:parking.latitude
+				longitude:parking.longitude];
+			parking.distance = [parking.location distanceFromLocation:_location];
 
-		return parking.distance < _radius;
-	}];
+			return parking.distance < _radius;
+		}];
 
-	_result = [[parkings filteredArrayUsingPredicate:predicate] mutableCopy];
+		_result = [[parkings filteredArrayUsingPredicate:predicate] mutableCopy];
 
-	[_result sortUsingComparator:^NSComparisonResult(DAParking *parking1, DAParking *parking2) {
-		CLLocationDistance diff = parking1.distance - parking2.distance;
+		[_result sortUsingComparator:^NSComparisonResult(DAParking *parking1, DAParking *parking2) {
+			CLLocationDistance diff = parking1.distance - parking2.distance;
 
-		return ABS(diff) < kDAComparisonDelta
-			? NSOrderedSame
-			: diff > 0 ? NSOrderedDescending : NSOrderedAscending;
-	}];
-	
-	[self finish];
+			return ABS(diff) < kDAComparisonDelta
+				? NSOrderedSame
+				: diff > 0 ? NSOrderedDescending : NSOrderedAscending;
+		}];
+		
+		[self finish];
+	}
 }
 
 @end

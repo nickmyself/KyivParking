@@ -75,14 +75,16 @@ static NSString * const kDAParkingElementName = @"parking";
 
 - (void)main
 {
-	[_parser parse];
+	@autoreleasepool {
+		[_parser parse];
 
-	[self willChangeValueForKey:@"isFinished"];
-    [self willChangeValueForKey:@"isExecuting"];
-    _executing = NO;
-    _finished = YES;
-    [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];
+		[self willChangeValueForKey:@"isFinished"];
+		[self willChangeValueForKey:@"isExecuting"];
+		_executing = NO;
+		_finished = YES;
+		[self didChangeValueForKey:@"isExecuting"];
+		[self didChangeValueForKey:@"isFinished"];
+	}
 }
 
 #pragma mark - NSXMLParserDelegate
